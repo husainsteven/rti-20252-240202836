@@ -53,41 +53,41 @@ Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur o
 ## Template A.1 — Research Mindset Self-Assessment
 
 ```
-Nama Peneliti    : __Husain Stefano__________________
-Tanggal          : ____10 April 2026________________
+Nama Peneliti    : Husain Stefano__________________
+Tanggal          : 10 April 2026________________
 
 1. Ketika membaca klaim "metode X 95% akurat":
-   - Pertanyaan pertama saya: ___Dataset apa yang digunakan? Apakah data
+   - Pertanyaan pertama saya: Dataset apa yang digunakan? Apakah data
      uji benar-benar terpisah dari data latih? Kelas serangan apa yang
      paling banyak di dataset tersebut?_________________
-   - Data yang dibutuhkan untuk verifikasi: __Distribusi kelas dalam
+   - Data yang dibutuhkan untuk verifikasi: Distribusi kelas dalam
      dataset KDD Cup 99, confusion matrix per kelas, waktu inferensi
      di lingkungan jaringan nyata, dan apakah eksperimen bisa
      direproduksi oleh peneliti lain.__________________
 
 2. Posisi paradigma:
    - Pendekatan: [ ] Positivis  [ ] Interpretivis  [ ] Design Science  [ ] Mixed
-   - Alasan: ___Paper mengukur performa secara objektif melalui angka
+   - Alasan: Paper mengukur performa secara objektif melalui angka
      akurasi, AUC, dan waktu pelatihan — sesuai positivisme. Sekaligus
      membangun artefak (model SVM & ANN) untuk menguji hipotesis
      perbandingan — sesuai Design Science Research.
 _________________
 
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: _____Dataset KDD Cup 99 dianggap cukup representatif
+   - Asumsi tersembunyi: Dataset KDD Cup 99 dianggap cukup representatif
      untuk jaringan komputer masa kini, padahal dataset ini dibuat
      tahun 1999._______________
-   - Sumber bias potensial: __________ Kelas trafik normal jauh lebih banyak dari
+   - Sumber bias potensial: Kelas trafik normal jauh lebih banyak dari
      kelas serangan (class imbalance), sehingga akurasi tinggi bisa
      dicapai hanya dengan memprediksi "normal" terus.__________
-   - Langkah mitigasi: ____Laporkan F1-score, precision, dan recall per
+   - Langkah mitigasi: Laporkan F1-score, precision, dan recall per
      kelas serangan; uji juga pada dataset yang lebih baru seperti
      CICIDS2017.________________
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: __Hasil confusion matrix, false
+   - Data yang tidak akan dimanipulasi: Hasil confusion matrix, false
      positive rate, dan waktu komputasi harus dilaporkan apa adanya.__________________
-   - Batasan yang diakui sejak awal: _______ Model hanya diuji pada satu
+   - Batasan yang diakui sejak awal: Model hanya diuji pada satu
      dataset lama; hasilnya belum tentu berlaku pada trafik jaringan
      nyata masa kini._____________
 ```
@@ -99,8 +99,8 @@ _________________
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: ______________ Studi Perbandingan Deteksi Intrusi Jaringan Menggunakan Machine Learning: (Metode SVM dan ANN)_________________________________
-> Penulis (Tahun): ______Tan, T., Sama, H., Wijaya, G., & Aboagye, O. E. (2023)
+> Judul: Studi Perbandingan Deteksi Intrusi Jaringan Menggunakan Machine Learning: (Metode SVM dan ANN)_________________________________
+> Penulis (Tahun): Tan, T., Sama, H., Wijaya, G., & Aboagye, O. E. (2023)
 >  https://ojs.unikom.ac.id/index.php/jati/article/view/10484
 ________________________________
 
