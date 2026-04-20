@@ -108,11 +108,11 @@ Fenomena → Problem
                                 jumlah fitur yang dipilih PSO____________________
 
 Problem Quality Check
-  [ ] Clarity — Apakah satu orang membaca akan paham?
-  [ ] Measurability — Apakah ada metrik kuantitatif?
-  [ ] Relevance — Apakah penting untuk domain?
-  [ ] Testability — Apakah bisa gagal?
-  [ ] Impact — Apakah ada kontribusi jika terjawab?
+  [ X ] Clarity — Apakah satu orang membaca akan paham?
+  [ X ] Measurability — Apakah ada metrik kuantitatif?
+  [ X ] Relevance — Apakah penting untuk domain?
+  [ X ] Testability — Apakah bisa gagal?
+  [ X ] Impact — Apakah ada kontribusi jika terjawab?
 
 Problem Statement (1 paragraf):
   Perangkat IoT yang menggunakan protokol MQTT rentan terhadap
