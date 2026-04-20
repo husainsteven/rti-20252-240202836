@@ -71,8 +71,8 @@ Literature Matrix (concept-centric):
 
 | Study | Tahun | Method | Data | Result | Limitation |
 |-------|-------|--------|------|--------|------------|
-|       |       |        |      |        |            |
-
+|1Dwi Azahra & Pertiwi — Jurnal Algoritma, ITG      |2025       |XGBoost + PSO (seleksi fitur)        |Simulasi MQTT lokal (1.054.817 rekaman: normal, SYN Flood, MQTT Attack)      |Akurasi 99,89%; F1-score 96,95–97,81%; waktu latih 0,16–0,24 detik/fold        |Dataset hanya dari simulasi lab lokal, belum diuji pada jaringan IoT produksi nyata; hanya dua jenis serangan            |
+|
 Pola yang ditemukan:
   Metode dominan     : ____________________
   Dataset umum       : ____________________
