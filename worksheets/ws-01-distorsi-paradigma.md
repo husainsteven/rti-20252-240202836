@@ -66,7 +66,7 @@ Tanggal          : 10 April 2026________________
      direproduksi oleh peneliti lain.__________________
 
 2. Posisi paradigma:
-   - Pendekatan: [ ] Positivis  [ ] Interpretivis  [ ] Design Science  [ ] Mixed
+   - Pendekatan: [ X ] Positivis  [ ] Interpretivis  [ X ] Design Science  [ ] Mixed
    - Alasan: Paper mengukur performa secara objektif melalui angka
      akurasi, AUC, dan waktu pelatihan — sesuai positivisme. Sekaligus
      membangun artefak (model SVM & ANN) untuk menguji hipotesis
