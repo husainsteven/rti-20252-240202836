@@ -203,7 +203,8 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 > Klaim "belum ada yang meneliti ini" itu sebenarnya agak berbahaya kalau tidak didukung bukti pencarian yang sistematis. Bisa saja penelitinya yang tidak tahu cara cari, bukan berarti memang kosong. Research gap yang valid berbeda: bukan sekadar topik yang belum pernah disentuh, tapi ada masalah yang teridentifikasi secara konkret dari literatur yang sudah ada — misalnya performa yang belum memadai, metode yang belum pernah dicoba untuk konteks tertentu, atau dataset yang tidak representatif.
 Cara membuktikannya? Pertama, dokumentasikan query pencarian secara eksplisit dan di database mana. Kedua, tunjukkan paper-paper yang paling dekat dan jelaskan di mana tepatnya paper itu berhenti — itulah titik gap-nya. Ketiga, kalau memungkinkan, lakukan snowballing ke depan (cek siapa yang mengutip paper kunci) untuk memastikan memang belum ada yang mengisi gap itu. Gap yang valid punya "bukti negatif yang terdokumentasi," bukan sekadar pernyataan tanpa jejak pencarian.___________________________________________________
 
-> 1. Dwi Azahra, A. & Pertiwi, K.M.D. (2025). Jurnal Algoritma, 22(2), 2272–2282. https://jurnal.itg.ac.id/index.php/algoritma/article/view/2623
+>
+1. Dwi Azahra, A. & Pertiwi, K.M.D. (2025). Jurnal Algoritma, 22(2), 2272–2282. https://jurnal.itg.ac.id/index.php/algoritma/article/view/2623
 2. Primadya, N.D. et al. (2024). Jurnal Eksplora Informatika, 13(2), 245–252. https://doi.org/10.30864/eksplora.v13i2.1065
 3. Samsudiat & Ramli (2025). JNTETI, 14(3), 216–225. https://doi.org/10.22146/jnteti.v14i3.19764
 4. Jumaidi et al. (2025). IPSSJ, 2(2). https://ipssj.com/index.php/ojs/article/view/323
