@@ -66,19 +66,19 @@ Metrik harus ditentukan **sebelum** eksperimen. Memilih metrik setelah melihat d
 ```
 VARIABLE & METRIC DEFINITION
 
-Research Question: ____________________
+Research Question: Apakah XGBoost+PSO menghasilkan akurasi, F1-Score per kelas, dan waktu inferensi yang lebih baik secara statistik dibandingkan Logistic Regression+RFE dan Random Forest dalam mendeteksi serangan DoS pada dataset MQTT lokal?____________________
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
 |----------|------|--------|--------|-------|--------|---------------|-------------|
-|          | IV   |        |        |       |        |               |             |
-|          | DV   |        |        |       |        |               |             |
-|          | CV   |        |        |       |        |               |             |
+| Jenis algoritma klasifikasi         | IV   |        |        |       |        |               |             |
+| Akurasi deteksi keseluruhan         | DV   |        |        |       |        |               |             |
+| Dataset yang digunakan         | CV   |        |        |       |        |               |             |
 
 Alignment Check:
   RQ → Concept → Variable → Metric → Data → Result
-  [ ] Setiap langkah terdokumentasi
-  [ ] Tidak ada "lompatan logis"
-  [ ] Metrik mengukur apa yang dimaksud (construct validity)
+  [ X ] Setiap langkah terdokumentasi
+  [ X ] Tidak ada "lompatan logis"
+  [ X ] Metrik mengukur apa yang dimaksud (construct validity)
 ```
 
 ---
@@ -87,16 +87,16 @@ Alignment Check:
 
 Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah XGBoost+PSO menghasilkan akurasi, F1-Score, dan waktu inferensi yang lebih baik dibanding Logistic Regression+RFE dan Random Forest dalam mendeteksi DoS pada dataset MQTT lokal?__________________________________________________
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
 |----------|------|---------------|----------------|-------------|--------|
-| *Contoh: Jenis model* | *IV* | *Pendekatan klasifikasi* | *Categorical: CNN vs RF* | *Nominal* | *—* |
-| | DV | | | | |
-| | CV | | | | |
+| Jenis algoritma | IV | Pendekatan klasifikasi yang digunakan | Kategorikal: XGBoost+PSO / LR+RFE / RF | Kategorikal: XGBoost+PSO / LR+RFE / RF | — |
+| Akurasi deteksi | DV | Ketepatan klasifikasi keseluruhan | Accuracy = (TP+TN)/(Total) | Ratio | % |
+| Dataset | CV | Sumber data yang dikontrol | Dataset MQTT lokal 1.054.817 rekaman (fixed) | Nominal | — |
 
-**Apakah ada lompatan logis dalam rantai?** [ ] Ya / [ ] Tidak
-> Jika ya, di mana? ____________________________________
+**Apakah ada lompatan logis dalam rantai?** [ ] Ya / [ X ] Tidak
+> Jika ya, di mana?  Setiap konsep abstrak sudah diterjemahkan ke metrik konkret yang bisa langsung dikumpulkan dari eksperimen. Tidak ada konsep yang tersisa sebagai asumsi implisit.____________________________________
 
 ---
 
@@ -106,15 +106,15 @@ Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Representative | *Contoh: 4 — F1-Score mewakili keseimbangan precision-recall* | |
-| Sensitive | | |
-| Feasible | | |
+| Representative | 5 | F1-Score per kelas langsung mengukur kemampuan deteksi serangan pada data imbalanced — jauh lebih representatif dari accuracy saja karena mempertimbangkan false negative pada kelas minoritas |
+| Sensitive | 4 | F1-Score cukup sensitif menangkap perbedaan performa antar model, terutama pada kelas MQTT Attack yang minoritas. Skor 4 bukan 5 karena pada kelas mayoritas (Normal) perbedaan antar model cenderung kecil dan bisa terkena ceiling effect |
+| Feasible | 5 | F1-Score dihitung otomatis oleh sklearn classification_report setiap fold. Tidak memerlukan alat tambahan, tidak ada biaya akuisisi data |
 
-**Apakah perlu secondary metric?** [ ] Ya / [ ] Tidak
-> Jika ya, apa dan mengapa? _____________________________
+**Apakah perlu secondary metric?** [ X ] Ya / [ ] Tidak
+> Jika ya, apa dan mengapa? Waktu inferensi per fold dijadikan secondary metric karena langsung menjawab pertanyaan praktis: apakah model cukup ringan untuk IoT? Tanpa metrik ini, penelitian hanya menjawab "mana yang lebih akurat" — padahal root cause dari WS-02 justru pada keterbatasan sumber daya perangkat IoT, bukan sekadar akurasi._____________________________
 
 **Contoh kasus ceiling effect untuk metrik ini:**
-> ___________________________________________________
+> Pada kelas Normal yang sangat mayoritas (jumlah sampel jauh lebih besar), hampir semua model akan menghasilkan F1-Score mendekati 100% sehingga perbedaan antar model tidak terlihat di kelas ini. Itulah mengapa F1-Score dilaporkan per kelas, bukan hanya macro average — agar perbedaan yang nyata pada kelas minoritas (SYN Flood dan MQTT Attack) tetap terlihat dan tidak tertutup oleh skor kelas mayoritas.___________________________________________________
 
 ---
 
@@ -124,10 +124,10 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 
 | Dimensi | Pertanyaan | Jawaban | Strategi Mitigasi |
 |---------|-----------|---------|------------------|
-| Completeness | *Apakah semua data point terkumpul?* | | |
-| Consistency | *Apakah ada kontradiksi internal?* | | |
-| Validity | *Apakah benar-benar mengukur yang dimaksud?* | | |
-| Representativeness | *Apakah sampel mewakili populasi target?* | | |
+| Completeness | Apakah semua data point terkumpul? | Dataset sudah lengkap — 1.054.817 rekaman dari simulasi Wireshark, tidak ada nilai kosong (missing value) karena data dihasilkan dari capture langsung | Lakukan pengecekan df.isnull().sum() sebelum eksperimen dimulai. Jika ada missing value, terapkan imputation atau hapus baris yang bermasalah dengan dokumentasi yang jelas |
+| Consistency | Apakah ada kontradiksi internal? | Ada potensi inkonsistensi label — paket yang sama bisa terlabel berbeda jika proses capture tidak konsisten. Distribusi kelas yang sangat tidak seimbang (MQTT Attack 1.040.417 vs Normal 7.200) juga berpotensi menyebabkan bias | Verifikasi distribusi kelas dengan value_counts(). Gunakan Stratified K-Fold agar setiap fold memiliki proporsi kelas yang sama dengan dataset keseluruhan |
+| Validity | Apakah benar-benar mengukur yang dimaksud? | Dataset berasal dari simulasi jaringan MQTT lokal yang direkam menggunakan Wireshark — lebih representatif dari dataset publik luar negeri. Namun tetap terbatas pada 2 jenis serangan saja | Dokumentasikan kondisi simulasi secara lengkap (topologi jaringan, tool yang digunakan, durasi capture). Akui keterbatasan ini sebagai limitasi penelitian di bagian Discussion |
+| Representativeness | Apakah sampel mewakili populasi target? | Dataset hanya mencakup 2 jenis serangan DoS (SYN Flood dan MQTT Attack) dari satu lingkungan simulasi lokal. Belum mewakili seluruh variasi serangan DoS yang mungkin terjadi di jaringan IoT nyata yang lebih beragam | Akui sebagai Data Gap yang sudah diidentifikasi di WS-03. Sarankan pengembangan ke dataset lebih luas sebagai future work. Hindari overgeneralisasi kesimpulan ke luar konteks MQTT lokal. |
 
 ---
 
@@ -136,5 +136,5 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 > Mengapa memilih metrik setelah melihat data dianggap p-hacking? Apa bedanya dengan eksplorasi data yang sah?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Memilih metrik setelah melihat data adalah p-hacking karena peneliti bisa secara tidak sadar — atau bahkan sengaja — memilih metrik yang kebetulan menghasilkan hasil yang signifikan. Misalnya, kalau accuracy tidak signifikan, lalu ganti ke F1-Score, lalu ke AUC sampai ketemu yang "bagus". Ini melanggar prinsip falsifiability karena kondisi penolakan hipotesis tidak ditentukan sebelum eksperimen — melainkan dicari-cari setelahnya.___________________________________________________
+> Bedanya dengan eksplorasi data yang sah adalah soal niat dan transparansi. Eksplorasi data (exploratory analysis) sah dilakukan asalkan hasilnya dilabeli secara jelas sebagai "eksploratori" dan tidak diklaim sebagai bukti konfirmatori. Misalnya: "Kami juga mengamati bahwa model X menunjukkan pola menarik pada metrik Y — ini akan menjadi hipotesis untuk penelitian selanjutnya." Klaim seperti itu tidak menipu karena statusnya transparan. Yang tidak boleh adalah mengeksplorasi berbagai metrik lalu melaporkan hanya yang signifikan seolah-olah itu memang metrik yang direncanakan sejak awal.___________________________________________________
