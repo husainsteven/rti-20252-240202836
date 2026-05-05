@@ -70,9 +70,9 @@ Research Question: Apakah XGBoost+PSO menghasilkan akurasi, F1-Score per kelas, 
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
 |----------|------|--------|--------|-------|--------|---------------|-------------|
-| Jenis algoritma klasifikasi         | IV   |        |        |       |        |               |             |
-| Akurasi deteksi keseluruhan         | DV   |        |        |       |        |               |             |
-| Dataset yang digunakan         | CV   |        |        |       |        |               |             |
+| Jenis algoritma klasifikasi         | IV   | Pendekatan machine learning yang digunakan untuk mengklasifikasikan trafik MQTT       | Kategorikal: XGBoost+PSO / LR+RFE / RF       | Nominal      | —       | Di-toggle via config.yaml — hanya satu baris yang berubah antar kondisi eksperimen               | IV harus nominal karena merupakan kategori diskrit tanpa urutan numerik yang bermakna. Pemilihan algoritma inilah yang menjadi faktor pembeda antar kondisi eksperimen            |
+| Akurasi deteksi keseluruhan         | DV   | Proporsi prediksi yang benar dari seluruh prediksi yang dibuat model       | Accuracy = (TP+TN)/(TP+TN+FP+FN)        | Ratio       | % (0–100)       | Dihitung otomatis dari confusion matrix setiap fold oleh sklearn              | Dipilih sebagai metrik pendukung karena memberikan gambaran umum performa model. Namun tidak digunakan sebagai primary metric karena bisa menyesatkan pada dataset yang tidak seimbang seperti dataset ini            |
+| Dataset yang digunakan         | CV   | Sumber data trafik MQTT yang digunakan untuk melatih dan menguji semua algoritma       | Dataset MQTT lokal 1.054.817 rekaman (fixed, sama untuk semua kondisi)       | Nominal      | —       | Dikunci di config.yaml — tidak berubah antar kondisi eksperimen              | Dikontrol agar perbedaan hasil antar algoritma murni karena perbedaan algoritmanya, bukan karena datanya berbeda. Ini adalah syarat dasar perbandingan yang adil sesuai prinsip Variable Isolation di WS-06            |
 
 Alignment Check:
   RQ → Concept → Variable → Metric → Data → Result
