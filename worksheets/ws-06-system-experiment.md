@@ -138,7 +138,7 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 **Komponen mana yang diprediksi paling berkontribusi?** Komponen B — Seleksi Fitur PSO_____
 **Mengapa?**
-> Dari literatur di WS-03, Dwi Azahra & Pertiwi (2025) menunjukkan bahwa PSO berhasil mereduksi fitur dari jumlah penuh menjadi hanya 11 fitur tanpa kehilangan akurasi yang berarti, sekaligus menurunkan waktu pelatihan secara signifikan. Ini mengindikasikan bahwa sebagian besar fitur dalam dataset MQTT bersifat redundan. Dengan menghapus fitur redundan, PSO tidak hanya mempercepat model tapi juga mengurangi risiko overfitting — dua manfaat sekaligus yang langsung menjawab root cause dari WS-02.___________________________________________________
+> Dari literatur di WS-03, Dwi Azahra & Pertiwi (2025) menunjukkan bahwa PSO berhasil mereduksi fitur dari jumlah penuh menjadi hanya 11 fitur tanpa kehilangan akurasi yang berarti, sekaligus menurunkan waktu pelatihan secara signifikan. Ini mengindikasikan bahwa sebagian besar fitur dalam dataset MQTT bersifat redundan. Dengan menghapus fitur redundan, PSO tidak hanya mempercepat model tapi juga mengurangi risiko overfitting — dua manfaat sekaligus yang langsung menjawab root cause dari WS-02. ___________________________________________________
 
 ---
 
