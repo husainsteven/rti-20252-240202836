@@ -67,25 +67,26 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: ____________________
+Research Question: Apakah XGBoost+PSO menghasilkan akurasi, F1-Score per kelas, dan waktu inferensi yang lebih baik dibanding Logistic Regression+RFE dan Random Forest dalam mendeteksi DoS pada dataset MQTT lokal?____________________
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-|          | IV   |                 |                           |
-|          | DV   |                 |                           |
-|          | CV   |                 |                           |
+|Jenis algoritma klasifikasi          | IV   |Modul Classifier — bisa di-swap antar kondisi eksperimen                 |      Ganti satu baris di config.yaml: model_type: xgboost_pso / lr_rfe / random_forest                     |
+|Akurasi dan F1-Score per kelas          | DV   |Modul Evaluasi — menghasilkan confusion matrix dan classification report otomatis setiap fold                 |sklearn classification_report() dipanggil otomatis setelah predict() setiap fold; hasilnya disimpan ke results.csv                           |
+|Dataset MQTT lokal          | CV   |Modul Data Loader — membaca dataset yang sama untuk semua kondisi                 |Path dataset dikunci di config.yaml; tidak bisa diubah tanpa mengubah file config secara eksplisit                           |
 
 4 Prinsip Desain:
-  [ ] Traceability — Setiap komponen bisa ditelusuri ke variabel
-  [ ] Variable Isolation — IV bisa diubah tanpa mengubah CV
-  [ ] Measurement Integration — Pengukuran DV built-in
-  [ ] Reproducibility — Setup bisa direkonstruksi
+  [ x ] Traceability — Setiap komponen bisa ditelusuri ke variabel
+  [ x ] Variable Isolation — IV bisa diubah tanpa mengubah CV
+  [ x ] Measurement Integration — Pengukuran DV built-in
+  [ x ] Reproducibility — Setup bisa direkonstruksi
 
 Experimental Setup:
-  Input data     : ____________________
-  Parameter      : ____________________
-  Output format  : ____________________
+  Input data     : Dataset MQTT lokal 1.054.817 rekaman dalam format CSV — sudah melalui preprocessing (MinMaxScaler + Label Encoding)
+____________________
+  Parameter      : Dikunci di config.yaml — model_type, k_fold=10, random_state=42, dataset_path, scaler_type, hasil PSO (11 fitur terpilih untuk kondisi XGBoost+PSO)____________________
+  Output format  : results.csv berisi per-fold metrics (accuracy, F1 per kelas, inference_time) + summary statistics (mean, std) + metadata hardware____________________
 ```
 
 ---
@@ -94,16 +95,16 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** __________________________________________________
+**RQ:** Apakah XGBoost+PSO menghasilkan akurasi, F1-Score per kelas, dan waktu inferensi yang lebih baik dibanding Logistic Regression+RFE dan Random Forest dalam mendeteksi DoS pada dataset MQTT lokal?__________________________________________________
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
-| | DV | | |
-| | CV | | |
+| Jenis algoritma | IV | Modul Classifier (swappable) | Ganti config: model_type: xgboost_pso / lr_rfe / random_forest |
+| Akurasi & F1-Score | DV | Modul Evaluasi (built-in) | sklearn classification_report() otomatis per fold → disimpan ke results.csv |
+| Dataset MQTT lokal | CV | Modul Data Loader (locked) | Path dikunci di config — tidak bisa diubah tanpa mengubah config secara eksplisit |
 
-**Apakah semua variabel bisa di-map?** [ ] Ya / [ ] Tidak
-> Jika tidak, komponen apa yang perlu ditambahkan? _________
+**Apakah semua variabel bisa di-map?** [ ✓ ] Ya / [ ] Tidak
+> Jika tidak, komponen apa yang perlu ditambahkan? Semua variabel (IV, DV, CV) memiliki komponen sistem yang bersesuaian. Tidak ada variabel yang "mengambang" tanpa representasi di arsitektur._________
 
 ---
 
@@ -113,14 +114,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
-| Modularity | | |
-| Controllability | | |
-| Measurability | | |
+| Traceability | Terpenuhi ✅ | Setiap modul diberi label variabel: Classifier=IV, Evaluasi+Timer=DV, DataLoader+Validator+Preprocessor=CV. Struktur folder kode mencerminkan pembagian ini sehingga mudah ditelusuri |
+| Modularity | Terpenuhi ✅ | Modul Classifier sepenuhnya terpisah dari modul lainnya. Mengganti dari XGBoost+PSO ke Random Forest hanya membutuhkan perubahan satu baris di config.yaml — tidak ada perubahan kode di modul lain |
+| Controllability | Terpenuhi ✅ | Semua CV dieksternalisasi ke config.yaml: dataset_path, k_fold, random_state, scaler_type, selected_features. Tidak ada parameter yang di-hardcode di dalam kode |
+| Measurability | Terpenuhi ✅ | Modul Evaluasi dan Timer berjalan otomatis tanpa intervensi manual. Hasilnya langsung tersimpan ke results.csv dengan format yang konsisten setiap run |
 
-**Prinsip mana yang paling sulit dipenuhi?** _______________
+**Prinsip mana yang paling sulit dipenuhi?** Modularity — khususnya pada integrasi PSO dengan XGBoost. PSO perlu menjalankan evaluasi model sebagai bagian dari proses seleksi fitur, sehingga ada ketergantungan antara Modul Feature Selection dan Modul Classifier yang harus dikelola dengan hati-hati agar tidak menciptakan data leakage._______________
 **Strategi untuk mengatasinya:**
-> ___________________________________________________
+> PSO dijalankan hanya pada data latih di dalam setiap fold — tidak pernah menyentuh data uji. Fitur yang dipilih PSO pada fold tertentu hanya digunakan untuk fold tersebut, bukan untuk fold lain. Ini memastikan isolasi variabel tetap terjaga dan tidak ada informasi dari data uji yang "bocor" ke proses pelatihan.___________________________________________________
 
 ---
 
@@ -130,14 +131,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
-| – A | ❌ (ganti RF) | ✅ | ✅ | |
-| – B | ✅ | ❌ (tanpa temporal) | ✅ | |
-| – C | ✅ | ✅ | ❌ (tanpa normalisasi) | |
+| Full |✅ |✅ | ✅ | Akurasi dan F1 tertinggi, waktu inferensi terendah — kondisi terbaik yang diklaim |
+| – A | ❌ | ✅ | ✅ | Akurasi dan F1 diprediksi turun — membuktikan kontribusi nyata XGBoost dibanding RF biasa |
+| – B | ✅ | ❌ | ✅ | Waktu inferensi meningkat dan F1 kelas minoritas turun — membuktikan kontribusi PSO dalam mereduksi dimensi |
+| – C | ✅ | ✅ | ❌ | Variance estimasi performa lebih tinggi dan tidak stabil — membuktikan kontribusi Stratified K-Fold |
 
-**Komponen mana yang diprediksi paling berkontribusi?** _____
+**Komponen mana yang diprediksi paling berkontribusi?** Komponen B — Seleksi Fitur PSO_____
 **Mengapa?**
-> ___________________________________________________
+> Dari literatur di WS-03, Dwi Azahra & Pertiwi (2025) menunjukkan bahwa PSO berhasil mereduksi fitur dari jumlah penuh menjadi hanya 11 fitur tanpa kehilangan akurasi yang berarti, sekaligus menurunkan waktu pelatihan secara signifikan. Ini mengindikasikan bahwa sebagian besar fitur dalam dataset MQTT bersifat redundan. Dengan menghapus fitur redundan, PSO tidak hanya mempercepat model tapi juga mengurangi risiko overfitting — dua manfaat sekaligus yang langsung menjawab root cause dari WS-02.___________________________________________________
 
 ---
 
@@ -146,5 +147,5 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Kalau sistem dibangun seperti produk — monolitik, fitur lengkap, semua komponen saling bergantung — ada dua risiko besar dalam konteks penelitian. Pertama, variable isolation menjadi hampir mustahil. Ketika semua komponen saling berkaitan erat, mengubah satu hal (misalnya algoritma) bisa diam-diam mempengaruhi hal lain (misalnya cara data diproses), sehingga perbedaan hasil antar kondisi tidak bisa diklaim murni karena algoritma yang berbeda.___________________________________________________
+> Kedua, reproduksi eksperimen menjadi sangat sulit. Peneliti lain tidak bisa mereproduksi hasil jika konfigurasi tersebar di berbagai tempat dalam kode, atau jika parameter di-hardcode tanpa dokumentasi. Arsitektur modular menyelesaikan kedua masalah ini: setiap komponen punya satu tanggung jawab yang jelas, perubahan pada IV tidak mempengaruhi CV, dan seluruh konfigurasi tersimpan di satu file yang bisa dibagikan. Dalam riset, arsitektur bukan soal estetika kode — tapi soal validitas eksperimen.___________________________________________________
