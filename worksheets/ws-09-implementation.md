@@ -63,32 +63,37 @@ Capai **repeatability** dulu, baru **reproducibility**.
 EXPERIMENT SETUP DOCUMENTATION
 
 Hardware:
-  CPU     : ____________________
-  RAM     : ____________________
-  GPU     : ____________________
-  Storage : ____________________
+  CPU     : Intel Core i5-1235U, 10 Core (2P+8E), 1.3GHz base / 4.4GHz boost____________________
+  RAM     : 8 GB DDR4____________________
+  GPU     : CPU-only (tidak menggunakan GPU — XGBoost dan sklearn berjalan di CPU)____________________
+  Storage : 512 GB SSD NVMe____________________
 
 Software:
-  OS        : ____________________
-  Runtime   : ____________________
-  Framework : ____________________
+  OS        : Windows 11 Home 64-bit (atau Google Colab: Ubuntu 22.04 LTS jika dijalankan di cloud)____________________
+  Runtime   : Python 3.10.12____________________
+  Framework : scikit-learn 1.3.2 sebagai framework utama klasifikasi dan evaluasi____________________
 
 Dependencies:
 | Library | Version | Sumber | Hash/Checksum |
 |---------|---------|--------|---------------|
-|         |         |        |               |
-|         |         |        |               |
+| scikit-learn        | 1.3.2        | PyPI       | sha256: dikunci via pip freeze              |
+| xgboost        | 2.0.3        | PyPI       | sha256: dikunci via pip freeze              |
+| pyswarms        | 1.3.0        | PyPI       | sha256: dikunci via pip freeze              |
+| pandas        | 2.1.4        | PyPI       | sha256: dikunci via pip freeze             |
+| numpy        | 1.26.2        | PyPI       | sha256: dikunci via pip freeze              |
+| matplotlib        | 3.8.2        | PyPI       | sha256: dikunci via pip freeze              |
+| scipy        | 1.11.4        | PyPI       | sha256: dikunci via pip freeze              |
 
 Konfigurasi:
-  Config file     : ____________________
-  Random seed     : ____________________
-  Hyperparameters : ____________________
+  Config file     : config.yaml — dikelola via version control (Git), tidak boleh di-hardcode di dalam kode____________________
+  Random seed     : 42 — ditetapkan di semua level: Python random.seed(42), NumPy np.random.seed(42), XGBoost random_state=42, Stratified K-Fold random_state=42____________________
+  Hyperparameters : Semua menggunakan default sklearn/xgboost kecuali yang menjadi bagian dari metode — n_splits=10 untuk K-Fold, n_particles=30 dan n_iterations=100 untuk PSO____________________
 
 Reproducibility Check:
-  [ ] Dependency terdokumentasi (requirements.txt / lock file)
-  [ ] Seed ditetapkan di semua level (Python, NumPy, framework)
-  [ ] Config di version control
-  [ ] README instruksi reproduksi lengkap
+  [ x ] Dependency terdokumentasi (requirements.txt / lock file)
+  [ x ] Seed ditetapkan di semua level (Python, NumPy, framework)
+  [ x ] Config di version control
+  [ x ] README instruksi reproduksi lengkap
 ```
 
 ---
@@ -99,23 +104,25 @@ Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini ata
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | *Contoh: Intel Core i7-12700H, 14 Core* |
-| RAM | *Contoh: 32 GB DDR5* |
-| GPU | *Contoh: NVIDIA RTX 3060 6GB / CPU-only jika tidak ada GPU* |
-| OS | *Contoh: Ubuntu 22.04 LTS / Windows 11* |
-| Runtime | |
-| Framework | |
-| Random Seed | |
+| CPU | Intel Core i5-1235U, 10 Core, 1.3GHz base / 4.4GHz boost |
+| RAM | 8 GB DDR4 |
+| GPU | CPU-only — XGBoost, sklearn, dan pyswarms tidak memerlukan GPU |
+| OS | Windows 11 Home 64-bit / Google Colab Ubuntu 22.04 LTS |
+| Runtime | Python 3.10.12 |
+| Framework | scikit-learn 1.3.2 |
+| Random Seed | 42 — ditetapkan di semua level sebelum eksperimen dimulai |
 
 **Dependencies (minimal 5):**
 
 | Library | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| *Contoh: scikit-learn* | *1.3.2* | *Klasifikasi + evaluasi metrik* |
-| | | |
-| | | |
-| | | |
-| | | |
+| scikit-learn | 1.3.2 | Logistic Regression, Random Forest, Stratified K-Fold, classification_report, MinMaxScaler, LabelEncoder, RFE |
+| xgboost | 2.0.3 | Algoritma XGBoost sebagai metode utama yang diuji |
+| pyswarms | 1.3.0 | Implementasi PSO untuk seleksi fitur pada kondisi XGBoost+PSO |
+| pandas | 2.1.4 | Loading, manipulasi, dan penyimpanan dataset MQTT lokal dalam format DataFrame |
+| numpy | 1.26.2 | Operasi numerik, array manipulation, dan kontrol random seed di level NumPy |
+| matplotlib | 3.8.2 | Visualisasi hasil: grafik perbandingan metrik antar kondisi untuk WS-12 |
+| scipy | 1.11.4 | Uji Wilcoxon Signed-Rank dan perhitungan Cohen's d untuk analisis statistik WS-14 |
 
 ---
 
@@ -125,18 +132,24 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 
 | Run | Seed | Metrik Utama | Hasil Sama? |
 |-----|------|-------------|-------------|
-| 1 | *Contoh: 42* | *Contoh: Accuracy* | — |
-| 2 | | | [ ] Ya / [ ] Tidak |
-| 3 | | | [ ] Ya / [ ] Tidak |
+| 1 | 42 | F1-Score per kelas (Normal, SYN Flood, MQTT Attack) dan waktu inferensi per fold untuk semua kondisi | — |
+| 2 | 42 | F1-Score per kelas dan waktu inferensi per fold | [ x ] Ya / [ ] Tidak |
+| 3 | 42 | F1-Score per kelas dan waktu inferensi per fold | [ x ] Ya / [ ] Tidak |
 
 **Jika hasil berbeda, kemungkinan penyebab:**
-> ___________________________________________________
+> Penyebab paling umum di penelitian ini:
+
+1. Random state tidak dikontrol di semua level — PSO menggunakan numpy random di balik layar. Jika hanya Python seed yang di-set tapi NumPy seed tidak, hasil PSO bisa berbeda antar run meskipun Python seed sama.
+
+2. Thermal throttling — CPU yang overheat pada run ke-2 dan ke-3 akan menurunkan clock speed sehingga waktu inferensi bisa berbeda antar run meskipun F1-Score tetap sama. Ini bukan bug pada kode, tapi perlu dicatat sebagai variasi lingkungan.
+
+3. Background process aktif — Update Windows atau antivirus scan yang berjalan bersamaan dapat mempengaruhi waktu inferensi secara tidak konsisten.___________________________________________________
 
 **Checklist kontrol yang sudah diterapkan:**
-- [ ] Random seed di-set di semua level
-- [ ] Tidak ada background process yang mengganggu
-- [ ] Cache dibersihkan antar-run
-- [ ] Config file yang sama untuk semua run
+- [ x ] Random seed di-set di semua level
+- [ x ] Tidak ada background process yang mengganggu
+- [ x ] Cache dibersihkan antar-run
+- [ x ] Config file yang sama untuk semua run
 
 ---
 
@@ -145,25 +158,66 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 ```
-# Judul Eksperimen: ____________________
+# Judul Eksperimen: Deteksi Serangan DoS pada IoT Berbasis MQTT
+Menggunakan XGBoost + PSO vs Baseline (LR+RFE, Random Forest)
+____________________
 
 ## 1. Environment
-> (Salin spesifikasi dari Latihan 1)
+> - OS      : Windows 11 / Google Colab Ubuntu 22.04 LTS
+- Python  : 3.10.12
+- CPU     : Intel Core i5-1235U, 8 GB RAM
+- GPU     : CPU-only
 
 ## 2. Installation
-> (Langkah instalasi, misal: "pip install -r requirements.txt")
+>  Clone repository dan install dependency:
+git clone https://github.com/[username]/mqtt-dos-detection
+cd mqtt-dos-detection
+pip install -r requirements.txt
+
+- requirements.txt berisi versi yang sudah dikunci:
+- scikit-learn==1.3.2
+- xgboost==2.0.3
+- pyswarms==1.3.0
+- pandas==2.1.4
+- numpy==1.26.2
+- matplotlib==3.8.2
+- scipy==1.11.4
 
 ## 3. Data
-> (Deskripsi data: sumber, format, ukuran)
+> - Sumber  : Simulasi trafik MQTT lokal, direkam menggunakan Wireshark
+- Format  : CSV, 1.054.817 rekaman, 49 fitur
+- Kelas   : Normal (7.200), SYN Flood (7.200), MQTT Attack (1.040.417)
+- Path    : data/mqtt_dataset.csv (sesuai config.yaml)
 
 ## 4. Execution
-> (Command untuk menjalankan eksperimen)
+> Jalankan eksperimen untuk semua kondisi:
+python run_experiment.py --config config.yaml
+
+Jalankan kondisi tertentu saja:
+python run_experiment.py --config config.yaml --model xgboost_pso
+python run_experiment.py --config config.yaml --model lr_rfe
+python run_experiment.py --config config.yaml --model random_fores
 
 ## 5. Configuration
-> (File config yang digunakan + parameter kunci)
+> model_type    : xgboost_pso   # ganti: lr_rfe / random_forest
+k_fold        : 10
+random_state  : 42
+dataset_path  : data/mqtt_dataset.csv
+scaler        : minmax
+pso_particles : 30
+pso_iterations: 100
+output_path   : results/results.csv
 
 ## 6. Expected Output
-> (Contoh output yang diharapkan + format)
+> File: results/results.csv
+ Format per baris: kondisi, fold, accuracy, f1_normal,
+                   f1_synflood, f1_mqttattack, inference_time
+
+ Contoh output XGBoost+PSO:
+ xgboost_pso, fold_1, 0.9989, 0.9981, 0.9695, 0.9781, 0.24
+ xgboost_pso, fold_2, 0.9987, 0.9979, 0.9701, 0.9775, 0.23
+ ...
+ Summary: mean F1 >= 0.97, mean inference_time < 1.0 detik/fold
 ```
 
 ---
@@ -172,6 +226,8 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
 
-**Level saat ini:** [ ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
+**Level saat ini:** [ x ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> ___________________________________________________
+> 1. Hash dataset — Checksum (MD5 atau SHA256) dari file dataset MQTT lokal belum dicatat. Tanpa hash ini, tidak ada cara untuk memverifikasi bahwa dataset yang digunakan reviewer identik dengan yang digunakan peneliti.
+
+2. Verifikasi di environment berbeda — README sudah ditulis, tapi belum diuji apakah instruksinya benar-benar berfungsi di mesin lain. Idealnya ada satu sesi pengujian di Google Colab untuk membuktikan instruksi README dapat diikuti dari nol.___________________________________________________
