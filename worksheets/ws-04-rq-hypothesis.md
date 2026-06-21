@@ -120,7 +120,7 @@ Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 **Tipe RQ:** [ X ] Comparison / [ ] Improvement / [ ] Exploratory
 
 **RQ versi revisi (setelah evaluasi):**
-> Apakah algoritma XGBoost dengan seleksi fitur berbasis PSO menghasilkan akurasi, F1-Score per kelas, dan waktu inferensi yang lebih baik secara statistik dibandingkan Logistic Regression+RFE dan Random Forest tanpa seleksi fitur, dalam mendeteksi serangan DoS pada dataset trafik MQTT hasil simulasi jaringan IoT lokal menggunakan Stratified K-Fold Cross Validation dengan k=10?___________________________________________________
+> Apakah XGBoost dengan seleksi fitur PSO (12 fitur) menghasilkan F1-Score yang lebih tinggi secara statistik dibandingkan Random Forest dalam mendeteksi serangan DoS pada trafik MQTT, berdasarkan hasil 5-fold cross validation dari dua studi yang menggunakan dataset simulasi MQTT lokal?___________________________________________________
 
 ---
 
@@ -130,8 +130,8 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
 |----------|-----|
-| H₀ | Tidak ada perbedaan signifikan (p > 0,05) antara F1-Score dan waktu inferensi XGBoost+PSO dibandingkan Logistic Regression+RFE dan Random Forest dalam deteksi DoS pada dataset MQTT lokal |
-| H₁ | XGBoost+PSO menghasilkan F1-Score lebih tinggi dan waktu inferensi lebih rendah secara signifikan (p < 0,05) dibandingkan kedua baseline pada dataset MQTT lokal yang sama |
+| H₀ | Tidak ada perbedaan signifikan (p > 0,05) antara F1-Score XGBoost+PSO (Dwi Azahra & Pertiwi, 2025) dan Random Forest (Pertiwi, Hasibuan, Rahmawati, 2026) berdasarkan hasil 5-fold cross validation pada dataset MQTT lokal. |
+| H₁ | XGBoost+PSO menghasilkan F1-Score yang lebih tinggi secara signifikan (p < 0,05) dibandingkan Random Forest berdasarkan hasil 5-fold cross validation pada dataset MQTT lokal. |
 | Metrik | F1-Score per kelas (primary), Accuracy dan waktu inferensi per fold (secondary) |
 | Threshold | p-value < 0,05 dan Cohen's d > 0,5 |
 | Justifikasi threshold | p < 0,05 adalah konvensi standar yang diakui luas. Cohen's d > 0,5 memastikan perbedaan bermakna secara praktis, bukan hanya karena sampel besar. Uji Wilcoxon Signed-Rank dipilih karena data K-Fold tidak dapat diasumsikan normal. |
