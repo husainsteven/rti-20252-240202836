@@ -1,42 +1,19 @@
-# [EXAMPLE] JWKS Flooding — Penelitian Mitigasi JWKS Endpoint Flooding
+# 09-docs
 
-**Judul:** Performance and Security Evaluation of Mitigating JWKS Endpoint Flooding on Microservices Gateway Using Redis-PostgreSQL Hybrid Caching
+Dokumen perencanaan & panduan kerja penelitian.
 
-**Target publikasi:** Sinta 2 (Jurnal RESTI/Telematika) atau Scopus Q3-Q4
+## Isi
 
-## Ringkasan
+- [rencana-penelitian.md](rencana-penelitian.md) — **indeks utama**, ringkasan topik & roadmap 5 tahap
+- [tahap-1-arsitektur-dan-skema-database.md](tahap-1-arsitektur-dan-skema-database.md) — arsitektur & skema DB (selesai)
+- [tahap-2-implementasi-gateway.md](tahap-2-implementasi-gateway.md) — rencana implementasi Gateway (Go)
+- [tahap-3-pengujian-k6.md](tahap-3-pengujian-k6.md) — rencana skrip pengujian k6
+- [tahap-4-analisis-data.md](tahap-4-analisis-data.md) — rencana ekstraksi data & visualisasi
+- [tahap-5-draf-paper.md](tahap-5-draf-paper.md) — rencana struktur draf paper
+- [archive/promt.md](archive/promt.md) — *(arsip)* prompt awal asisten riset, sudah dikonsolidasikan ke [.ai/research-context.md](../.ai/research-context.md)
 
-Penelitian ini mengevaluasi mitigasi celah keamanan **JWKS Endpoint Flooding** (mirip CVE-2026-48524) — di mana penyerang membanjiri API Gateway dengan JWT ber-`kid` (Key ID) acak sehingga resolver JWKS melakukan kueri tak terbatas ke Identity Service/database, menyebabkan resource exhaustion. Solusi yang diuji adalah skema **Redis-PostgreSQL Hybrid Caching** (positive & negative cache) dengan rate-limiting pada lookup kunci, diimplementasikan pada API Gateway berbasis Go (Echo).
+Deliverable konkret tiap tahap (kode, data, hasil, naskah) disimpan di folder bernomor terkait (lihat [README utama](../README.md)).
 
-Detail lengkap topik & roadmap: [09-docs/rencana-penelitian.md](09-docs/rencana-penelitian.md)
+## Knowledge & Instruksi AI
 
-## Struktur Direktori
-
-| Folder | Isi |
-|---|---|
-| [00-admin/](00-admin/) | Administrasi penelitian (jadwal, korespondensi) |
-| [01-proposal/](01-proposal/) | Proposal penelitian |
-| [02-literatur/](02-literatur/) | Referensi & paper terkait (Tinjauan Pustaka) |
-| [03-teori/](03-teori/) | Arsitektur & desain sistem (Tahap 1) |
-| [04-data/](04-data/) | Data mentah hasil pengujian k6 & metrik container |
-| [05-kode/](05-kode/) | Source code: API Gateway (Go) & skrip k6 (Tahap 2 & 3) |
-| [06-output/](06-output/) | Statistik & visualisasi hasil pengujian (Tahap 4) |
-| [07-manuskrip/](07-manuskrip/) | Draf naskah jurnal (Tahap 5) |
-| [08-laporan/](08-laporan/) | Laporan progres/akhir penelitian |
-| [09-docs/](09-docs/) | Dokumen perencanaan & roadmap tahap-tahap penelitian |
-
-## Status Tahapan
-
-- [x] **Tahap 1** — Perancangan Arsitektur & Skema Database — *Selesai* ([detail](09-docs/tahap-1-arsitektur-dan-skema-database.md))
-- [x] **Tahap 2** — Implementasi API Gateway (Go) — *Selesai* ([detail](09-docs/tahap-2-implementasi-gateway.md))
-- [x] **Tahap 3** — Skrip Pengujian k6 (Legitimate vs Attack Traffic) — *Selesai* ([detail](09-docs/tahap-3-pengujian-k6.md))
-- [x] **Tahap 4** — Ekstraksi Data & Visualisasi — *Selesai* ([detail](09-docs/tahap-4-analisis-data.md))
-- [ ] **Tahap 5** — Draf Paper Jurnal — *Sedang berjalan* ([detail](09-docs/tahap-5-draf-paper.md))
-
-## Laporan Penelitian
-
-Laporan penelitian komprehensif (ringkasan eksekutif, metodologi per tahap, hasil, kendala, kesimpulan): [08-laporan/laporan-penelitian.md](08-laporan/laporan-penelitian.md)
-
-## Author
-
-Helmi Bahar
+Peran/persona AI, ringkasan penelitian, status roadmap, dan konvensi folder kini dikonsolidasikan di [.ai/](../.ai/) (dimuat otomatis oleh Claude Code via [CLAUDE.md](../CLAUDE.md) di root).
