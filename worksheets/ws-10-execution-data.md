@@ -96,15 +96,15 @@ Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan s
 
 | Run # | Skenario | Seed | Parameter Kunci | Status |
 |-------|----------|------|----------------|--------|
-| *1* | *Contoh: BERT-base, DS-1* | *42* | *lr=2e-5, epoch=10* | *Planned* |
-| *2* | *BERT-base, DS-1* | *123* | *lr=2e-5, epoch=10* | *Planned* |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 | Random Forest - MQTT Dataset | 42 | n_estimators=100, test_size=0.2 | Completed |
+| 2 | Random Forest - MQTT Dataset | 123 | n_estimators=100, test_size=0.2 | Planned |
+| 3 | Random Forest - MQTT Dataset | 999 | n_estimators=100, test_size=0.2 | Planned |
+| 4 | Random Forest - MQTT Dataset | 2025 | n_estimators=100, test_size=0.2 | Planned |
+| 5 | Random Forest - MQTT Dataset | 777 | n_estimators=100, test_size=0.2 | Planned |
 
-**Total skenario:** ____
-**Run per skenario:** ____
-**Total run keseluruhan:** ____
+**Total skenario:__1__
+**Run per skenario:__5__
+**Total run keseluruhan: __5__
 
 ---
 
@@ -115,25 +115,31 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | *run-001* |
-| Timestamp | *2025-03-15T10:30:00* |
-| | |
+| Run ID | run-001 |
+| Timestamp | 2026-07-08 11:24 WIB |
+| Dataset | MQTT Dataset Reduced |
+| Model | Random Forest Classifier |
+| Peneliti | Husain Stefano |
 
 **Konfigurasi:**
 | Field | Contoh |
 |-------|--------|
-| Seed | *42* |
-| Code version | *commit abc1234* |
-| | |
+| Seed | 42 |
+| Code version | Google Colab Notebook v1 |
+| Train-Test Split | 80 : 20 |
+| Random State | 42 |
+| Estimator | 100 |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| *Contoh: Accuracy* | *float* | *0.0 – 1.0* |
-| | | |
-| | | |
+| Accuracy | float | 0 – 1 |
+| Precision | float | 0 – 1 |
+| Recall | float | 0 – 1 |
+| F1-Score | float | 0 – 1 |
+| Execution Time | float | >0 detik |
 
-**Format output:** [ ] CSV / [ ] JSON / [ ] Database / [ ] Lainnya: ____
+**Format output:** [ ✓ ] CSV / [ ✓ ] Notebook Google Colab [ ] JSON / [ ] Database / [ ] Lainnya: ____
 
 ---
 
@@ -143,10 +149,10 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | *Contoh: OOM pada batch_size=64* | *Contoh: Dokumentasi, re-run batch_size=32, catat perubahan* |
-| Hasil ekstrem | | |
-| Waktu eksekusi anomali | | |
-| Inkonsistensi dengan run lain | | |
+| Run gagal (crash) | Runtime Colab terputus | Jalankan kembali eksperimen dan catat penyebabnya |
+| Hasil ekstrem | Accuracy jauh di bawah 80% | Periksa preprocessing dan parameter model |
+| Waktu eksekusi anomali | Training jauh lebih lama dari biasanya | Cek penggunaan RAM dan CPU Colab |
+| Inkonsistensi dengan run lain | Accuracy berubah jauh antar seed | Lakukan minimal 5 kali eksperimen kemudian hitung rata-rata hasil |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -157,6 +163,6 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> ___________________________________________________
+> Sebelumnya saya sering hanya menjalankan model satu kali kemudian langsung menggunakan hasil accuracy sebagai hasil penelitian. Cara tersebut ternyata kurang tepat karena hasil yang diperoleh dapat dipengaruhi oleh proses pembagian data maupun kondisi eksperimen sehingga belum tentu mewakili performa model yang sebenarnya.___________________________________________________
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
+> Untuk penelitian ini saya akan menjalankan eksperimen beberapa kali menggunakan seed yang berbeda, kemudian mencatat seluruh parameter, hasil evaluasi, waktu eksekusi, dan apabila terjadi anomali akan didokumentasikan. Dengan demikian hasil penelitian menjadi lebih valid, dapat direproduksi, dan lebih dapat dipertanggungjawabkan secara ilmiah.___________________________________________________
