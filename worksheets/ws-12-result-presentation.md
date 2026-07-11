@@ -65,25 +65,25 @@ Keduanya **saling melengkapi**:
 ```
 RESULT PRESENTATION PLAN
 
-Research Question : ____________________
-Metrik Utama      : ____________________
+Research Question : Bagaimana performa algoritma Random Forest dalam mengklasifikasikan dataset MQTT berdasarkan metrik Accuracy, Precision, Recall, F1-Score, dan waktu eksekusi?____________________
+Metrik Utama      : Accuracy____________________
 
 Tabel Hasil:
 | Skenario | Metrik 1 (mean ± std) | Metrik 2 (mean ± std) | n |
 |----------|----------------------|----------------------|---|
-|          |                      |                      |   |
+| Random Forest (5 Run)          | Accuracy = 93.85% ± 0.11%                     | Execution Time = 20.07 ± 1.56 detik                     | 5  |
 
 Visualisasi yang Direncanakan:
 | # | Jenis Grafik | Pesan Utama | Metrik |
 |---|-------------|-------------|--------|
-| 1 |             |             |        |
-| 2 |             |             |        |
+| 1 | Bar Chart            | Membandingkan accuracy pada setiap run            | Accuracy       |
+| 2 | Bar Chart            | Menampilkan rata-rata performa model            | Accuracy, Precision, Recall, F1-Score       |
 
 Bias Check:
-  [ ] Y-axis mulai dari 0 (atau dijustifikasi)
+  [ x ] Y-axis mulai dari 0 (atau dijustifikasi)
   [ ] Error bar/CI ditampilkan
-  [ ] Semua data disertakan (tidak cherry-picked)
-  [ ] Tidak menggunakan 3D tanpa alasan
+  [ x ] Semua data disertakan (tidak cherry-picked)
+  [ x ] Tidak menggunakan 3D tanpa alasan
 ```
 
 ---
@@ -94,15 +94,14 @@ Buat tabel hasil eksperimen Anda (boleh dengan data simulasi jika belum punya da
 
 | Skenario | Metrik 1 (mean ± std) | Metrik 2 (mean ± std) | n |
 |----------|----------------------|----------------------|---|
-| *Contoh: BERT-base* | *88.4 ± 1.2%* | *45.2 ± 3.1 min* | *10* |
-| | | | |
-| | | | |
+| Random Forest (5 Run) | 93.85% ± 0.11% | 20.07 ± 1.56 detik | 5 |
+
 
 **Checklist tabel:**
-- [ ] Self-contained (judul jelas, satuan ada, N tercantum)
-- [ ] Mean ± std (bukan single number)
-- [ ] Diurutkan berdasarkan metrik utama
-- [ ] Format konsisten di semua baris
+- [ ✓ ] Self-contained (judul jelas, satuan ada, N tercantum)
+- [ ✓ ] Mean ± std (bukan single number)
+- [ ✓ ] Diurutkan berdasarkan metrik utama
+- [ ✓ ] Format konsisten di semua baris
 
 ---
 
@@ -112,9 +111,9 @@ Rencanakan 2-3 grafik untuk menyajikan data dari Latihan 1. Setiap grafik = satu
 
 | # | Jenis Grafik | Pesan | Data yang Digunakan |
 |---|-------------|-------|---------------------|
-| 1 | *Contoh: Bar chart + error bar* | *Perbandingan accuracy antar 3 model* | *Mean accuracy ± std* |
-| 2 | *Box plot* | *Distribusi F1 per model* | *Semua run F1* |
-| 3 | *Scatter plot* | *Trade-off accuracy vs training time* | *Mean accuracy vs mean time* |
+| 1 | Bar Chart Accuracy | Membandingkan nilai accuracy pada setiap run eksperimen | Accuracy setiap run |
+| 2 | Bar Chart Performa Model | Menampilkan rata-rata Accuracy, Precision, Recall, dan F1-Score | Nilai rata-rata seluruh metrik |
+| 3 | Bar Chart Waktu Eksekusi | Membandingkan waktu eksekusi pada setiap run | Execution Time setiap run |
 
 ---
 
@@ -126,13 +125,13 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 | Pertanyaan | Jawaban |
 |-----------|---------|
-| Apakah Y-axis menyesatkan? | *Contoh: Ya — A terlihat 2× B padahal beda 0.4%* |
-| Apakah error bar ditampilkan? | |
-| Apakah semua kondisi ditampilkan? | |
-| Apa solusinya? | |
+| Apakah Y-axis menyesatkan? | Ya. Karena sumbu Y dimulai dari 90%, sehingga perbedaan kecil terlihat jauh lebih besar. |
+| Apakah error bar ditampilkan? | Tidak |
+| Apakah semua kondisi ditampilkan? | Ya, tetapi visualisasinya tetap dapat menyesatkan karena skala sumbu Y tidak dimulai dari nol. |
+| Apa solusinya? | Gunakan sumbu Y mulai dari 0 atau berikan alasan ilmiah jika menggunakan skala yang dipotong. Tambahkan error bar agar variasi data terlihat. |
 
 **Evaluasi grafik Anda sendiri dari Latihan 2:**
-- [ ] Semua bias check lulus
+- [ ✓ ] Semua bias check lulus
 - [ ] Ada yang perlu diperbaiki: ____
 
 ---
@@ -141,5 +140,5 @@ Evaluasi visualisasi berikut untuk bias (skenario dari contoh):
 
 > Mengapa tabel dan grafik keduanya diperlukan — tidak cukup salah satu saja? Pernahkah Anda membuat grafik yang (tanpa sengaja) menyesatkan?
 
-> ___________________________________________________
+> Tabel dan grafik memiliki fungsi yang saling melengkapi. Tabel menyajikan nilai secara rinci sehingga pembaca dapat mengetahui angka yang tepat, sedangkan grafik membantu melihat pola, tren, dan perbandingan dengan lebih cepat. Dengan menggunakan keduanya, hasil penelitian menjadi lebih mudah dipahami dan lebih informatif. Pada eksperimen ini saya belum pernah membuat grafik yang sengaja menyesatkan, namun saya menyadari bahwa penggunaan skala sumbu yang tidak tepat atau tidak menampilkan seluruh data dapat menyebabkan pembaca memperoleh interpretasi yang keliru. Oleh karena itu, visualisasi harus dibuat secara objektif dan mengikuti prinsip penyajian data ilmiah.___________________________________________________
 > ___________________________________________________
