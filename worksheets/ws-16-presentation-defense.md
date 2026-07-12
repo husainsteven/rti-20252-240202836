@@ -121,17 +121,17 @@ Rencanakan presentasi 15 menit untuk riset Anda.
 
 | # | Pesan Utama | Visual yang Digunakan | Waktu |
 |---|-------------|----------------------|-------|
-| 1 | *Contoh: Judul + konteks — rekomendasi vs kepuasan* | *Title slide, gambar sistem* | *1 min* |
-| 2 | *Contoh: Problem — RMSE tinggi tapi satisfaction rendah (45/100)* | *Bar chart: satisfaction vs RMSE per sistem* | *2 min* |
-| 3 | *Contoh: Gap + RQ — belum ada CF+context untuk satisfaction* | *Tabel gap literatur* | *1.5 min* |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
+| 1 | Judul penelitian dan identitas peneliti | Title slide + logo universitas | 1 min |
+| 2 | Latar belakang pentingnya deteksi DoS pada IoT berbasis MQTT | Diagram IoT dan ilustrasi serangan DoS | 2 min |
+| 3 | Research gap, rumusan masalah, dan tujuan penelitian | Tabel research gap |  1.5 min |
+| 4 | Metodologi penelitian | Flowchart penelitian | 2 menit |
+| 5 | Dataset dan preprocessing | Diagram preprocessing | 2 menit |
+| 6 | Hasil evaluasi model | Tabel dan grafik Accuracy, Precision, Recall, F1-Score | 2 menit |
+| 7 | Pembahasan hasil penelitian | Grafik perbandingan model | 2 menit |
+| 8 | Keterbatasan dan penelitian selanjutnya | Diagram limitation & future work | 1,5 menit |
+| 9 | Kesimpulan dan kontribusi penelitian | Ringkasan poin utama | 1 menit |
 
-**Total waktu estimasi:** ____ menit
+**Total waktu estimasi:** 15 menit
 
 ---
 
@@ -141,11 +141,11 @@ Prediksi 5 pertanyaan yang mungkin diajukan penguji, lalu siapkan jawaban CER.
 
 | # | Kategori | Pertanyaan | Claim | Evidence | Reasoning |
 |---|----------|-----------|-------|----------|-----------|
-| 1 | *Problem* | *Contoh: Mengapa fokus kepuasan, bukan akurasi?* | *Akurasi tinggi tidak menjamin kepuasan* | *Survey: 45/100 satisfaction meski RMSE 0.87* | *Gap antara metrik teknis dan pengalaman pengguna* |
-| 2 | *Method* | *Contoh: Mengapa hanya 3 dataset?* | *3 dataset mewakili variasi: small-clean, medium-clean, medium-noisy* | *Tabel karakteristik dataset di Bab Method* | *Generalisasi perlu validasi lanjut — tercatat sebagai limitasi* |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Problem | Mengapa fokus pada serangan DoS di jaringan IoT? | DoS merupakan ancaman penting pada IoT. | MQTT memiliki keterbatasan keamanan sehingga rentan terhadap DoS. | Penelitian diperlukan untuk meningkatkan kemampuan deteksi serangan. |
+| 2 | Method | Mengapa memilih XGBoost? | XGBoost memiliki performa klasifikasi yang tinggi. | XGBoost menggunakan teknik boosting dan regularisasi yang meningkatkan akurasi model. | Model dipilih karena sesuai untuk klasifikasi data serangan jaringan. |
+| 3 | Method | Mengapa menggunakan PSO? | PSO mampu mengoptimalkan hyperparameter secara efisien. | PSO mencari kombinasi parameter terbaik melalui iterasi partikel. | Parameter optimal dapat meningkatkan performa XGBoost |
+| 4 | Results | Bagaimana membuktikan model lebih baik? | Performa dievaluasi menggunakan metrik standar. | Accuracy, Precision, Recall, dan F1-Score dibandingkan dengan model pembanding. | Perbandingan dilakukan secara objektif menggunakan hasil evaluasi dan analisis statistik. |
+| 5 | Generalization | Apakah hasil dapat diterapkan pada dataset lain? | Potensi ada, tetapi perlu validasi lanjutan. | Penelitian hanya menggunakan satu dataset.  | Pengujian pada dataset lain diperlukan untuk memastikan kemampuan generalisasi. |
 
 ---
 
@@ -154,16 +154,16 @@ Prediksi 5 pertanyaan yang mungkin diajukan penguji, lalu siapkan jawaban CER.
 Minta teman/kolega mengajukan 3 pertanyaan tentang riset Anda. Catat pertanyaan dan evaluasi jawaban Anda.
 
 | # | Pertanyaan | Jawaban Saya | Evaluasi |
-|---|-----------|-------------|---------|| *1* | *Contoh: "Mengapa tidak membandingkan dengan metode Y?"* | *Contoh: "Karena Y memerlukan dataset labeled yang tidak tersedia. Disebutkan sebagai limitasi di halaman X."* | *[✓] Direct [✓] Data-based [✓] Honest* || 1 | | | [ ] Direct [ ] Data-based [ ] Honest |
-| 2 | | | [ ] Direct [ ] Data-based [ ] Honest |
-| 3 | | | [ ] Direct [ ] Data-based [ ] Honest |
+|---|-----------|-------------|---------|
+| 1 | Mengapa menggunakan PSO dibandingkan Genetic Algorithm? | PSO dipilih karena memiliki proses optimasi yang lebih sederhana, jumlah parameter lebih sedikit, dan mampu menemukan solusi optimal dengan waktu komputasi yang efisien. | [✓] Direct [✓] Data-based [✓] Honest |
+| 2 | Bagaimana jika dataset tidak seimbang? | Penelitian dapat menggunakan teknik penyeimbangan data seperti SMOTE atau evaluasi menggunakan F1-Score agar hasil lebih representatif. | [ ✓ ] Direct [ ✓ ] Data-based [ ✓ ] Honest |
+| 3 | Bagaimana implementasi penelitian pada dunia nyata? | Model dapat diintegrasikan ke dalam Intrusion Detection System (IDS) untuk memantau lalu lintas MQTT dan mendeteksi indikasi serangan DoS secara otomatis. | [ ✓ ] Direct [ ✓ ] Data-based [ ✓ ] Honest |
 
 **Pertanyaan yang paling sulit dijawab:**
-> ___________________________________________________
+> Bagaimana membuktikan bahwa metode XGBoost + PSO tetap memiliki performa yang baik ketika diuji pada dataset IoT lain yang memiliki karakteristik berbeda?
 
 **Apa yang perlu disiapkan lebih baik:**
-> ___________________________________________________
-
+> Menyiapkan referensi penelitian terdahulu yang menggunakan dataset berbeda, memperdalam pemahaman mengenai proses optimasi PSO, serta menyiapkan analisis terkait keterbatasan penelitian dan peluang pengembangan pada penelitian selanjutnya.
 ---
 
 ## Refleksi
@@ -171,7 +171,7 @@ Minta teman/kolega mengajukan 3 pertanyaan tentang riset Anda. Catat pertanyaan 
 > Dari seluruh proses WS-01 sampai WS-16 — dari paradigma riset hingga presentasi — bagian mana yang paling mengubah cara Anda berpikir tentang riset? Apa satu hal yang akan selalu Anda terapkan di riset berikutnya?
 
 **Insight terbesar:**
-> ___________________________________________________
+> Selama mengikuti WS-01 hingga WS-16, saya memahami bahwa penelitian bukan hanya menghasilkan model dengan performa yang baik, tetapi juga menyusun argumen ilmiah yang didukung oleh metodologi yang tepat, analisis yang objektif, dan kemampuan mempertahankan hasil penelitian melalui presentasi serta sesi tanya jawab.
 
 **Yang akan selalu diterapkan:**
-> ___________________________________________________
+> Pada penelitian berikutnya saya akan selalu memulai dengan identifikasi research gap yang jelas, memilih metode yang sesuai dengan permasalahan, melakukan evaluasi menggunakan analisis statistik yang tepat, serta mempersiapkan presentasi dan jawaban berdasarkan pendekatan Claim–Evidence–Reasoning (CER) agar setiap kesimpulan dapat dipertanggungjawabkan secara ilmiah.
